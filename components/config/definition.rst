@@ -74,7 +74,7 @@ Variable nodes
 
 A tree contains node definitions which can be layed out in a semantic way.
 This means, using indentation and the fluent notation, it is possible to
-reflect the real structure of the configuration values::
+reflect the real structure of the configuration values:
 
     $rootNode
         ->children()
@@ -90,6 +90,44 @@ reflect the real structure of the configuration values::
 The root node itself is an array node, and has children, like the boolean
 node ``auto_connect`` and the scalar node ``default_connection``. In general:
 after defining a node, a call to ``end()`` takes you one step up in the hierarchy.
+
+Node type
+~~~~~~~~~
+
+It is possible to validate the type of a provided value by using appropriate node
+definition. Node type are available for:
+
+* variable (no validation)
+* scalar
+* boolean
+* integer
+* float
+* array
+* enum
+
+and are created with ``node($name, $type)`` or there associated shortcuts ``xxxxNode($name)`` method.
+
+Numeric node constraints
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Numeric node (float and integer) provide two extra constraints min() and max() allowing to validate the value:
+
+.. code-block:: php
+
+    $rootNode
+        ->children()
+            ->integerNode('positive_value')
+                ->min(0)
+            ->end()
+            ->floatNode('big_value')
+                ->max(5E45)
+            ->end()
+            ->integerNode('value_inside_a_range')
+                ->min(-50)->max(50)
+            ->end()
+        ->end()
+    ;
+
 
 Array nodes
 ~~~~~~~~~~~
